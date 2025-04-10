@@ -33,6 +33,7 @@ rust)
     ;;
 esac
 
+# download git repository
 if [[ ! -d "$REPO_DIR" ]]; then
     git clone "$REPO_URL" "$REPO_DIR"
 fi
