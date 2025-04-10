@@ -12,6 +12,7 @@ if [[ -v HELP ]]; then
 HELP=       print this help message
 REPO=       specify the repository to use
     -> values: go/golang, rust
+PULL=       update git repo used
 '
     exit 0
 fi
@@ -22,10 +23,12 @@ case "${REPO}" in
 go | golang)
     REPO_URL="https://github.com/daniele821/track-payments-golang"
     REPO_DIR="${DATA_DIR}/.repo_golang"
+    REPO_BIN="${DATA_DIR}/.payments_golang"
     ;;
 rust)
     REPO_URL="https://github.com/daniele821/track-payments-rust"
     REPO_DIR="${DATA_DIR}/.repo_rust"
+    REPO_BIN="${DATA_DIR}/.payments_rust"
     ;;
 *)
     echo "invalid REPO value ($REPO)"
@@ -33,7 +36,17 @@ rust)
     ;;
 esac
 
-# download git repository
+# download git repository and optionally update
 if [[ ! -d "$REPO_DIR" ]]; then
-    git clone "$REPO_URL" "$REPO_DIR"
+    ! git clone "$REPO_URL" "$REPO_DIR" && echo 'failed to update repository' && exit 1
+elif [[ -v PULL ]]; then
+    ! git -C "$REPO_DIR" pull && echo 'failed to update repository' && exit 1
 fi
+
+# build executable
+BUILD_EXE="$REPO_DIR/build.sh"
+if [[ ! -f "$BUILD_EXE" ]]; then
+    echo "build script not found ($BUILD_EXE)"
+    exit 1
+fi
+"${BUILD_EXE}" "$REPO_BIN"
