@@ -35,23 +35,23 @@ rust)
     exit 1
     ;;
 esac
-REPO_DIR="${DATA_DIR}/.repo_${REPO}"
-REPO_BIN_PAYMENT="${DATA_DIR}/.payments_${REPO}"
+REPO_DIR="$(mktemp -d)"
+REPO_BIN="${DATA_DIR}/.payments_${REPO}"
 
-# download git repository and optionally update
-if [[ ! -d "$REPO_DIR" ]]; then
+# download git repository and build executable
+if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]]; then
     ! git clone "$REPO_URL" "$REPO_DIR" && echo 'failed to update repository' && exit 1
-elif [[ -v PULL ]]; then
-    ! git -C "$REPO_DIR" pull && echo 'failed to update repository' && exit 1
-fi
 
-# build executable
-BUILD_EXE="$REPO_DIR/build.sh"
-if [[ ! -f "$BUILD_EXE" ]]; then
-    echo "build script not found ($BUILD_EXE)"
-    exit 1
+    BUILD_EXE="$REPO_DIR/build.sh"
+    if [[ ! -f "$BUILD_EXE" ]]; then
+        echo "build script not found ($BUILD_EXE)"
+        exit 1
+    fi
+    "${BUILD_EXE}" "$REPO_BIN" "payments"
 fi
-"${BUILD_EXE}" "$REPO_BIN_PAYMENT" "payments"
 
 # run executable
-"${REPO_BIN_PAYMENT}" "$@"
+"${REPO_BIN}" "$@"
+
+# cleanup
+rm -rf "$REPO_DIR"
