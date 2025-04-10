@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# required by repo:
+# `build.sh` script, which accepts 2 parameters:
+# - PATH: where to install the binary file to
+# - payments|decrypt: specify what the binary file is for
+
 SCRIPT_PWD="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(dirname "${SCRIPT_PWD}")"
 DATA_DIR="${SCRIPT_DIR}/data"
@@ -49,7 +54,7 @@ if [[ ! -f "$BUILD_EXE" ]]; then
     echo "build script not found ($BUILD_EXE)"
     exit 1
 fi
-"${BUILD_EXE}" "$REPO_BIN"
+"${BUILD_EXE}" "$REPO_BIN" "payments"
 
 # run executable
 "${REPO_BIN}" "$@"
