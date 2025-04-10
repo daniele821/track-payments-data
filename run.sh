@@ -25,21 +25,20 @@ fi
 # specify repository to use
 [[ -v REPO ]] || REPO="golang"
 case "${REPO}" in
-go | golang)
+golang)
     REPO_URL="https://github.com/daniele821/track-payments-golang"
-    REPO_DIR="${DATA_DIR}/.repo_golang"
-    REPO_BIN="${DATA_DIR}/.payments_golang"
     ;;
 rust)
     REPO_URL="https://github.com/daniele821/track-payments-rust"
-    REPO_DIR="${DATA_DIR}/.repo_rust"
-    REPO_BIN="${DATA_DIR}/.payments_rust"
     ;;
 *)
     echo "invalid REPO value ($REPO)"
     exit 1
     ;;
 esac
+REPO_DIR="${DATA_DIR}/.repo_${REPO}"
+REPO_BIN_PAYMENT="${DATA_DIR}/.payments_${REPO}"
+REPO_BIN_DECRYPT="${DATA_DIR}/.decrypt_${REPO}"
 
 # download git repository and optionally update
 if [[ ! -d "$REPO_DIR" ]]; then
@@ -54,7 +53,8 @@ if [[ ! -f "$BUILD_EXE" ]]; then
     echo "build script not found ($BUILD_EXE)"
     exit 1
 fi
-"${BUILD_EXE}" "$REPO_BIN" "payments"
+"${BUILD_EXE}" "$REPO_BIN_PAYMENT" "payments"
+"${BUILD_EXE}" "$REPO_BIN_DECRYPT" "decrypt"
 
 # run executable
-"${REPO_BIN}" "$@"
+"${REPO_BIN_PAYMENT}" "$@"
