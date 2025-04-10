@@ -50,3 +50,6 @@ if [[ ! -f "$BUILD_EXE" ]]; then
     exit 1
 fi
 "${BUILD_EXE}" "$REPO_BIN"
+
+# run executable
+"${REPO_BIN}" "$@"
