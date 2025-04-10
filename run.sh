@@ -4,6 +4,10 @@
 # `build.sh` script, which accepts 2 parameters:
 # - PATH: where to install the binary file to
 # - payments|decrypt: specify what the binary file is for
+#
+# the executable for decrypting needs to accept two parameters:
+# - cipher key file
+# - file to decrypt
 
 SCRIPT_PWD="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(dirname "${SCRIPT_PWD}")"
