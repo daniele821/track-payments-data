@@ -47,7 +47,7 @@ if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]]; then
         echo "build script not found ($BUILD_EXE)"
         exit 1
     fi
-    "${BUILD_EXE}" "$REPO_BIN" "payments"
+    "${BUILD_EXE}" "$REPO_BIN"
 fi
 
 # run executable
