@@ -4,6 +4,7 @@ SCRIPT_PWD="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(dirname "${SCRIPT_PWD}")"
 DATA_DIR="${SCRIPT_DIR}/data"
 
+# help message
 if [[ -v HELP ]]; then
     echo -n 'script to auto manage different repos to track payments:
 
@@ -15,6 +16,7 @@ REPO=       specify the repository to use
     exit 0
 fi
 
+# specify repository to use
 [[ -v REPO ]] || REPO="golang"
 case "${REPO}" in
 go | golang)
