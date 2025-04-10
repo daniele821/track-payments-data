@@ -22,12 +22,13 @@ PULL=       update git repo used
 fi
 
 # specify repository to use
-[[ -v REPO ]] || REPO="golang"
 case "${REPO}" in
-golang)
+"" | go | golang)
+    REPO="golang"
     REPO_URL="https://github.com/daniele821/track-payments-golang"
     ;;
 rust)
+    REPO="rust"
     REPO_URL="https://github.com/daniele821/track-payments-rust"
     ;;
 *)
