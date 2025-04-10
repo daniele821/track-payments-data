@@ -1,18 +1,12 @@
 #!/bin/bash
 
 # required by repo:
-# `build.sh` script, which accepts 2 parameters:
+# `build.sh` script, which accepts 1 parameter:
 # - PATH: where to install the binary file to
-# - payments|decrypt: specify what the binary file is for
-#
-# the executable for decrypting needs to accept two parameters:
-# - cipher key file
-# - file to decrypt
 
 SCRIPT_PWD="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(dirname "${SCRIPT_PWD}")"
 DATA_DIR="${SCRIPT_DIR}/data"
-DECRYPT_BIN_LINK="${DATA_DIR}/.decrypt"
 
 # help message
 if [[ -v HELP ]]; then
@@ -43,7 +37,6 @@ rust)
 esac
 REPO_DIR="${DATA_DIR}/.repo_${REPO}"
 REPO_BIN_PAYMENT="${DATA_DIR}/.payments_${REPO}"
-REPO_BIN_DECRYPT="${DATA_DIR}/.decrypt_${REPO}"
 
 # download git repository and optionally update
 if [[ ! -d "$REPO_DIR" ]]; then
@@ -59,10 +52,6 @@ if [[ ! -f "$BUILD_EXE" ]]; then
     exit 1
 fi
 "${BUILD_EXE}" "$REPO_BIN_PAYMENT" "payments"
-"${BUILD_EXE}" "$REPO_BIN_DECRYPT" "decrypt"
-
-rm -f "${DECRYPT_BIN_LINK}"
-ln -s "${REPO_BIN_DECRYPT}" "${DECRYPT_BIN_LINK}"
 
 # run executable
 "${REPO_BIN_PAYMENT}" "$@"
