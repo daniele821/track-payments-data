@@ -8,6 +8,7 @@
 SCRIPT_PWD="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(dirname "${SCRIPT_PWD}")"
 DATA_DIR="${SCRIPT_DIR}/data"
+DECRYPT_BIN_LINK="${DATA_DIR}/.decrypt"
 
 # help message
 if [[ -v HELP ]]; then
@@ -55,6 +56,9 @@ if [[ ! -f "$BUILD_EXE" ]]; then
 fi
 "${BUILD_EXE}" "$REPO_BIN_PAYMENT" "payments"
 "${BUILD_EXE}" "$REPO_BIN_DECRYPT" "decrypt"
+
+rm -f "${DECRYPT_BIN_LINK}"
+ln -s "${REPO_BIN_DECRYPT}" "${DECRYPT_BIN_LINK}"
 
 # run executable
 "${REPO_BIN_PAYMENT}" "$@"
