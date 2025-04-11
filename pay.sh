@@ -23,7 +23,8 @@ if [[ -v HELP ]]; then
     Environment variables:
 HELP=       print this help message
 REPO=       specify the repository to use
-    -> values: go/golang, rust
+    - go/golang* 
+    - rust
 PULL=       update git repo used
 '
     exit 0
