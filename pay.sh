@@ -2,11 +2,19 @@
 
 # required by repo:
 # `build.sh` script, which accepts 1 parameter:
-# - PATH: where to install the binary file to
+#   - PATH: where to install the binary file to
+#
+# `decrypt.sh` script, which accepts 1 parameter:
+#   - PATH: where to isntall the binary file to
+# and is used to decrypt files.
+# The program built accepts two parameters:
+#   - KEY PATH: path to cipher key
+#   - FILE PATH: patht to encrypted file
 
 SCRIPT_PWD="$(realpath "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(dirname "${SCRIPT_PWD}")"
 DATA_DIR="${SCRIPT_DIR}/data"
+DECRYPT_BIN="${DATA_DIR}/.decrypt"
 
 # help message
 if [[ -v HELP ]]; then
@@ -40,15 +48,17 @@ REPO_DIR="$(mktemp -d)"
 REPO_BIN="${DATA_DIR}/.payments_${REPO}"
 
 # download git repository and build executable
-if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]]; then
+if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]] || [[ ! -e "$DECRYPT_BIN" ]]; then
     ! git clone "$REPO_URL" "$REPO_DIR" && echo 'failed to update repository' && exit 1
 
     BUILD_EXE="$REPO_DIR/build.sh"
+    BUILD_DECRYPT_EXE="$REPO_DIR/decrypt.sh"
     if [[ ! -f "$BUILD_EXE" ]]; then
         echo "build script not found ($BUILD_EXE)"
         exit 1
     fi
     "${BUILD_EXE}" "$REPO_BIN"
+    "${BUILD_DECRYPT_EXE}" "$DECRYPT_BIN"
 fi
 
 # run executable
