@@ -52,14 +52,9 @@ REPO_BIN="${DATA_DIR}/.payments_${REPO}"
 if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]] || [[ ! -e "$DECRYPT_BIN" ]]; then
     ! git clone "$REPO_URL" "$REPO_DIR" && echo 'failed to update repository' && exit 1
 
-    BUILD_EXE="$REPO_DIR/build.sh"
-    BUILD_DECRYPT_EXE="$REPO_DIR/decrypt.sh"
-    if [[ ! -f "$BUILD_EXE" ]]; then
-        echo "build script not found ($BUILD_EXE)"
-        exit 1
-    fi
-    "${BUILD_EXE}" "$REPO_BIN"
-    "${BUILD_DECRYPT_EXE}" "$DECRYPT_BIN"
+    ! "$REPO_DIR/build.sh" "$REPO_BIN" && echo 'building payments binary failed' && exit 1
+    ! "$REPO_DIR/decrypt.sh" "$DECRYPT_BIN" && echo 'building decrypt binary failed' && exit 1
+
 fi
 
 # run executable
