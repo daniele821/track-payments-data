@@ -41,7 +41,7 @@ rust)
     REPO_URL="https://github.com/daniele821/track-payments-rust"
     ;;
 *)
-    echo "invalid REPO value ($REPO)"
+    echo -e "\e[1;31minvalid REPO value ($REPO)\e[m"
     exit 1
     ;;
 esac
@@ -52,8 +52,14 @@ REPO_BIN="${DATA_DIR}/.payments_${REPO}"
 if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]] || [[ ! -e "$DECRYPT_BIN" ]]; then
     ! git clone "$REPO_URL" "$REPO_DIR" && echo 'failed to update repository' && exit 1
 
-    echo 'compiling program (payments)...' && ! "$REPO_DIR/build.sh" "$REPO_BIN" && echo 'compilation failed!' && exit 1
-    echo 'compiling program (decrypt)...' && ! "$REPO_DIR/decrypt.sh" "$DECRYPT_BIN" && echo 'compilation failed!' && exit 1
+    echo -e "\e[1;33mcompiling program (payments)...\e[m" &&
+        ! "$REPO_DIR/build.sh" "$REPO_BIN" &&
+        echo -e "\e[1;31mcompilation failed\e[m" &&
+        exit 1
+    echo -e "\e[1;33mcompiling program (decrypt)...\e[m" &&
+        ! "$REPO_DIR/decrypt.sh" "$DECRYPT_BIN" &&
+        echo -e "\e[1;31mcompilation failed\e[m" &&
+        exit 1
 fi
 
 # run executable
