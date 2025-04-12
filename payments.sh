@@ -54,7 +54,6 @@ if [[ -v PULL ]] || [[ ! -e "$REPO_BIN" ]] || [[ ! -e "$DECRYPT_BIN" ]]; then
 
     ! "$REPO_DIR/build.sh" "$REPO_BIN" && echo 'building payments binary failed' && exit 1
     ! "$REPO_DIR/decrypt.sh" "$DECRYPT_BIN" && echo 'building decrypt binary failed' && exit 1
-
 fi
 
 # run executable
