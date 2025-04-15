@@ -38,7 +38,7 @@ case "${REPO}" in
     ;;
 rust)
     REPO="rust"
-    REPO_URL="https://github.com/daniele821/track-payments-rust"
+    REPO_URL="https://github.com/daniele821/track-payments-rust-old"
     ;;
 *)
     echo -e "\e[1;31minvalid REPO value ($REPO)\e[m"
